@@ -7,7 +7,7 @@
   font-style: normal;
 }
 @font-face {
-  font-family: "ColfaxAI";
+  font-family: "Soehne";
   src: url(https://cdn.openai.com/API/fonts/ColfaxAIBold.woff2) format("woff2"),
     url(https://cdn.openai.com/API/fonts/ColfaxAIBold.woff) format("woff");
   font-weight: bold;
@@ -27,14 +27,18 @@
   padding-top: 60px;
 }
 .main .icon {
-  width: 34px;
+  width: 100px;
 }
 .main h3 {
-  font-size: 32px;
+  font-size: 40px;
   line-height: 40px;
   font-weight: bold;
   color: #202123;
-  margin: 16px 0 40px;
+  margin: 16px 0 0px;
+}
+.main h4{
+  margin: 16px 0 50px;
+  
 }
 .main form {
   display: flex;

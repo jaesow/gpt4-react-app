@@ -15,11 +15,11 @@ export default async function (req, res) {
     return;
   }
 
-  const animal = req.body.animal || '';
-  if (animal.trim().length === 0) {
+  const mood = req.body.mood || '';
+  if (mood.trim().length === 0) {
     res.status(400).json({
       error: {
-        message: "Please enter a valid animal",
+        message: "Please enter a valid mood",
       }
     });
     return;
@@ -28,10 +28,13 @@ export default async function (req, res) {
   try {
     const completion = await openai.createCompletion({
       model: "text-davinci-003",
-      prompt: generatePrompt(animal),
+      prompt: generatePrompt(mood),
       temperature: 0.6,
+      max_tokens: 100,
+     // n: 3, // Generate three suggestions
     });
-    res.status(200).json({ result: completion.data.choices[0].text });
+    const suggestions = parseResponse(completion.data.choices);
+    res.status(200).json({ suggestions });
   } catch(error) {
     // Consider adjusting the error handling logic for your use case
     if (error.response) {
@@ -48,15 +51,20 @@ export default async function (req, res) {
   }
 }
 
-function generatePrompt(animal) {
-  const capitalizedAnimal =
-    animal[0].toUpperCase() + animal.slice(1).toLowerCase();
-  return `Suggest three names for an animal that is a superhero.
+function generatePrompt(mood) {
+  const capitalizedMood =
+    mood[0].toUpperCase() + mood.slice(1).toLowerCase();
+  return `Suggest three ways to improve a bad mood.
 
-Animal: Cat
-Names: Captain Sharpclaw, Agent Fluffball, The Incredible Feline
-Animal: Dog
-Names: Ruff the Protector, Wonder Canine, Sir Barks-a-Lot
-Animal: ${capitalizedAnimal}
-Names:`;
+Mood: Happy
+Ways: Go for a walk in nature, listen to uplifting music, practice gratitude
+Mood: Stressed
+Ways: Try deep breathing exercises, engage in physical activity, talk to a friend
+Mood: ${capitalizedMood}
+Ways:`;
+}
+
+function parseResponse(choices) {
+  const suggestions = choices.map(choice => choice.text.trim());
+  return suggestions;
 }
