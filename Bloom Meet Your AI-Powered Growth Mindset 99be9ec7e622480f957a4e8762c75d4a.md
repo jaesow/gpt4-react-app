@@ -3,8 +3,6 @@
 Created: May 29, 2023 12:14 PM
 Tags: Tech Design, Walkthrough
 
-This is a mental health activity generator and mood tracker using the OpenAI API. The tech stack includes the [Next.js](https://nextjs.org/) framework with [React](https://reactjs.org/), [Node.js](https://nodejs.org/en), [ApexCharts.js](https://apexcharts.com/docs/react-charts/), and [Anime.js](https://animejs.com/).
-
 ## v1: As a user of Bloom, an AI-powered well-being app
 
 - I want to be able to express and communicate my mood effectively and freely, whether it's through **one word**, **one emoji(or more)**, or an entire paragraph.
@@ -17,47 +15,17 @@ This is a mental health activity generator and mood tracker using the OpenAI API
     Learned about the logic that makes for the best prompts and trained model
     
     1. Examples in a prompt make for better completions
-
     2. Being specific in your prompt is how you train your model
-
     3. When **temperature** is above 0, submitting the same prompt results in different completions each time
-
         1. “Remember that the model predicts which text is most likely to follow the text preceding it. Temperature is a value between 0 and 1 that essentially lets you control how confident the model should be when making these predictions. Lowering temperature means it will take fewer risks, and completions will be more accurate and deterministic. Increasing temperature will result in more diverse completions.”
-
 2. **Forked the [OpenAI quick-start node repo](https://github.com/openai/openai-quickstart-node)**
     
-    An example pet name generator app used in the OpenAI API [quickstart tutorial](https://platform.openai.com/docs/quickstart). It uses the [Next.js](https://nextjs.org/) framework with [React](https://reactjs.org/). 
-
-    Completed the initial setup:
-
-      1. Navigated into the project directory
-
-      ```bash
-      $ cd openai-quickstart-node
-      ```
-
-      2. Installed the requirements
-
-      ```bash
-      $ npm install
-      ```
-
-      3. Made a copy of the example environment variables file
-
-  
-      4. Add my [API key](https://platform.openai.com/account/api-keys) to the newly created `.env` file
-
-      5. Ran the app
-
-      ```bash
-      $ npm run dev
-      ```
+    An example pet name generator app used in the OpenAI API [quickstart tutorial](https://platform.openai.com/docs/quickstart). It uses the [Next.js](https://nextjs.org/) framework with [React](https://reactjs.org/).
+    
+    ![Screen Shot 2023-05-29 at 12.47.46 PM.png](Bloom%20Meet%20Your%20AI-Powered%20Growth%20Mindset%2099be9ec7e622480f957a4e8762c75d4a/Screen_Shot_2023-05-29_at_12.47.46_PM.png)
     
     - Function generatePrompt is responsible for accepting the input animal
     - Firsts makes sure the input is capitalized (the first letter), and then returns a dynamic completion that’s different for each input based on the prompt instructions and examples and temperature setting
-
-    ![Screen Shot 2023-05-29 at 12.47.46 PM.png](Bloom%20Meet%20Your%20AI-Powered%20Growth%20Mindset%2099be9ec7e622480f957a4e8762c75d4a/Screen_Shot_2023-05-29_at_12.47.46_PM.png)
-
 3. Defined mood and trained the model to accept moods communicated in one word, sentence, or paragraph. Trained model to return three ways/suggestions to boost the mood. Updated the index.js file to update the mood data and output the suggestion data generated in generatePrompt to the user. Added styling to improve the user experience and over product brand.
     
     [https://github.com/jaesow/gpt4-react-app/commit/b4b296f9e31fdd4a821b6bebbcb2a9db0bd2565e](https://github.com/jaesow/gpt4-react-app/commit/b4b296f9e31fdd4a821b6bebbcb2a9db0bd2565e)
