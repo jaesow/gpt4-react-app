@@ -1,11 +1,13 @@
 import { Configuration, OpenAIApi } from "openai";
 
+// Configuration and setup for OpenAI API
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
 });
 const openai = new OpenAIApi(configuration);
 
 export default async function (req, res) {
+  // Check if OpenAI API key is configured
   if (!configuration.apiKey) {
     res.status(500).json({
       error: {
@@ -16,6 +18,7 @@ export default async function (req, res) {
   }
 
   const mood = req.body.mood || '';
+  // Validate the provided mood (ensures mood data exists in the prompt and trims)
   if (mood.trim().length === 0) {
     res.status(400).json({
       error: {
@@ -26,16 +29,24 @@ export default async function (req, res) {
   }
 
   try {
+    // Make a completion request to OpenAI API
     const completion = await openai.createCompletion({
       model: "text-davinci-003",
       prompt: generatePrompt(mood),
       temperature: 0.6,
       max_tokens: 100,
     });
+
+    // Parse and extract suggestions from the API response
     const suggestions = parseResponse(completion.data.choices);
+
+    // Return the suggestions in the response
     res.status(200).json({ suggestions });
   } catch(error) {
-    // Consider adjusting the error handling logic for your use case
+    // Error handling logic (the first I added while tested)
+    if(error.response.status === 429){
+      console.erroe('Server is overloaded. Please wait a few moments and try again')
+    }
     if (error.response) {
       console.error(error.response.status, error.response.data);
       res.status(error.response.status).json(error.response.data);
