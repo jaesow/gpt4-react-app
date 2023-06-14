@@ -31,7 +31,6 @@ export default async function (req, res) {
       prompt: generatePrompt(mood),
       temperature: 0.6,
       max_tokens: 100,
-     // n: 3, // Generate three suggestions
     });
     const suggestions = parseResponse(completion.data.choices);
     res.status(200).json({ suggestions });
@@ -52,17 +51,29 @@ export default async function (req, res) {
 }
 
 function generatePrompt(mood) {
-  const capitalizedMood =
-    mood[0].toUpperCase() + mood.slice(1).toLowerCase();
-  return `Suggest three ways to improve a bad mood.
+  const capitalizedMood = mood[0].toUpperCase() + mood.slice(1).toLowerCase();
+  let sentiment = "";
 
+  // Set sentiment based on mood
+  if (mood.toLowerCase() === "negative") {
+    sentiment = "Negative";
+  } else if (mood.toLowerCase() === "positive") {
+    sentiment = "Positive";
+  } else {
+    sentiment = `Classify the sentiment in the mood "${capitalizedMood}" and suggest three well-being activities to boost the mood.`;
+  }
+
+  return `
 Mood: Happy
-Ways: Go for a walk in nature, listen to uplifting music, practice gratitude
+Activity: You seem Happy! Go for a walk in nature, listen to uplifting music, practice gratitude
 Mood: Stressed
-Ways: Try deep breathing exercises, engage in physical activity, talk to a friend
-Mood: ${capitalizedMood}
-Ways:`;
+Activity: It's okay to be stressed sometimes. Try deep breathing exercises, engage in physical activity, talk to a friend
+Mood: 😕
+Activity: You seem sad today. Surround yourself with loved ones, hug a favorite stuffed animal, take your pet for a walk
+Mood: ${capitalizedMood} ${sentiment}
+Activity:`;
 }
+
 
 function parseResponse(choices) {
   const suggestions = choices.map(choice => choice.text.trim());
